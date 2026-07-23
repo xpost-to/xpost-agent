@@ -36,12 +36,13 @@ curl -s "$POSTGUARD_URL/api/v1/post-results?post_id=<post-uuid>" \
 
 ## Workflow
 
-1. **List accounts first** — you need account ids, and the platforms tell you
+1. **Attach media when needed** — call `upload_media` with a local file `path` or a public `url` to get a media_id. Instagram/TikTok/YouTube/Pinterest REQUIRE media.
+2. **List accounts first** — you need account ids, and the platforms tell you
    the constraints (e.g. Instagram/TikTok/YouTube/Pinterest require media).
-2. **Create the post.** Per-platform caption overrides go in
+3. **Create the post.** Per-platform caption overrides go in
    `platform_configurations`, e.g.
    `{"x": {"caption": "shorter version for X"}}`.
-3. **Read the response status honestly:**
+4. **Read the response status honestly:**
    - `pending_approval` — expected in copilot mode. Tell the user their
      approval is needed (dashboard or Telegram); do NOT retry or treat it as
      an error.
@@ -49,7 +50,7 @@ curl -s "$POSTGUARD_URL/api/v1/post-results?post_id=<post-uuid>" \
      rule; the violations array says which. Rewrite the caption to comply and
      try once more. Never attempt to evade a guardrail.
    - `scheduled` / `posted` — done; report the scheduled time.
-4. **Check the delivery receipt** after publishing time and report the live
+5. **Check the delivery receipt** after publishing time and report the live
    post URL, or the per-platform error if delivery failed.
 
 ## Rules
