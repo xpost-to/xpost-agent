@@ -36,12 +36,17 @@ curl -s "$POSTGUARD_URL/api/v1/post-results?post_id=<post-uuid>" \
 
 ## Workflow
 
-1. **Attach media when needed** — call `upload_media` with a local file `path` or a public `url` to get a media_id. Instagram/TikTok/YouTube/Pinterest REQUIRE media.
+1. **Attach media when needed** — call `upload_media` with a local file `path` or a public `url` to get a media_id. Instagram/TikTok/YouTube/Pinterest REQUIRE media. For a video you can pick the cover frame by passing `thumbnail_timestamp_ms` (ms into the video) when uploading via the REST API.
 2. **List accounts first** — you need account ids, and the platforms tell you
    the constraints (e.g. Instagram/TikTok/YouTube/Pinterest require media).
 3. **Create the post.** Per-platform caption overrides go in
    `platform_configurations`, e.g.
-   `{"x": {"caption": "shorter version for X"}}`.
+   `{"x": {"caption": "shorter version for X"}}`. To post a story or reel
+   instead of a feed post, set `placement` there:
+   `{"instagram": {"placement": "stories"}}` — instagram/facebook take
+   `reels`/`stories`/`timeline`, threads takes `reels`/`timeline`. Reels
+   require a video; stories require media. Invalid combinations are rejected
+   at create time with a clear error.
 4. **Read the response status honestly:**
    - `pending_approval` — expected in copilot mode. Tell the user their
      approval is needed (dashboard or Telegram); do NOT retry or treat it as
