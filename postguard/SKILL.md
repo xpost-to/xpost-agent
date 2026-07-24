@@ -46,7 +46,14 @@ curl -s "$POSTGUARD_URL/api/v1/post-results?post_id=<post-uuid>" \
    `{"instagram": {"placement": "stories"}}` — instagram/facebook take
    `reels`/`stories`/`timeline`, threads takes `reels`/`timeline`. Reels
    require a video; stories require media. Invalid combinations are rejected
-   at create time with a clear error.
+   at create time with a clear error. For X, `{"x": {"first_comment": "…"}}`
+   posts that text as a reply right under the tweet (the link-in-first-comment
+   pattern), and `{"x": {"thread": ["tweet 2", "tweet 3"]}}` (up to 4
+   follow-ups) posts a chained thread under the main tweet. When uploading an
+   image you can pass `alt_text` (accessibility description — applied on X
+   and Bluesky). Every text field — caption, overrides, first comment, thread
+   tweets — goes through the workspace guardrails; hiding content in an
+   override is rejected the same as in the caption.
 4. **Read the response status honestly:**
    - `pending_approval` — expected in copilot mode. Tell the user their
      approval is needed (dashboard or Telegram); do NOT retry or treat it as
