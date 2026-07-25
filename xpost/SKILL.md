@@ -1,18 +1,18 @@
 ---
-name: postguard
-description: Post to social media through Postguard — draft, schedule, and check delivery across X, Instagram, Bluesky, TikTok, YouTube, LinkedIn, Facebook, Threads, and Pinterest, with human approval and brand guardrails enforced. Use when asked to post, schedule, or cross-post social content, or to check whether a post was delivered.
+name: xpost
+description: Post to social media through xPost — draft, schedule, and check delivery across X, Instagram, Bluesky, TikTok, YouTube, LinkedIn, Facebook, Threads, and Pinterest, with human approval and brand guardrails enforced. Use when asked to post, schedule, or cross-post social content, or to check whether a post was delivered.
 ---
 
-# Posting through Postguard
+# Posting through xPost
 
-Postguard is the posting layer between you and the user's social audience.
+xPost is the posting layer between you and the user's social audience.
 Every post you create passes brand guardrails, and in copilot mode it is held
 for the user's approval before anything publishes. This is by design — never
 try to work around it.
 
 ## Connection
 
-Preferred: the `postguard` MCP server (tools: `list_accounts`, `create_post`,
+Preferred: the `xpost` MCP server (tools: `list_accounts`, `create_post`,
 `bulk_post`, `list_posts`, `get_delivery_receipt`, `check_guardrails`,
 `upload_media`, plus the learning loop: `get_post_metrics`, `get_insights`,
 `get_top_posts`, `get_best_times`). Two ways to connect: the hosted
@@ -20,32 +20,32 @@ Streamable HTTP connector at `<instance>/api/mcp` (Bearer = the API key; or
 `<instance>/api/mcp/<key>` for clients that can't set headers), or the local
 stdio server (`node mcp/server.mjs`) for localhost instances and host-file
 uploads. If MCP is not available, use the REST
-API directly with the environment variables `POSTGUARD_URL` (default
-`http://localhost:3001`) and `POSTGUARD_API_KEY` — full spec at
-`$POSTGUARD_URL/api/v1/openapi.json`:
+API directly with the environment variables `XPOST_URL` (default
+`http://localhost:3001`) and `XPOST_API_KEY` — full spec at
+`$XPOST_URL/api/v1/openapi.json`:
 
 ```bash
 # List connected accounts (get ids for posting)
-curl -s "$POSTGUARD_URL/api/v1/social-accounts" \
-  -H "Authorization: Bearer $POSTGUARD_API_KEY"
+curl -s "$XPOST_URL/api/v1/social-accounts" \
+  -H "Authorization: Bearer $XPOST_API_KEY"
 
 # Create a post (omit scheduled_at to post as soon as it's approved)
-curl -s -X POST "$POSTGUARD_URL/api/v1/posts" \
-  -H "Authorization: Bearer $POSTGUARD_API_KEY" \
+curl -s -X POST "$XPOST_URL/api/v1/posts" \
+  -H "Authorization: Bearer $XPOST_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"caption": "...", "social_accounts": ["<account-uuid>"],
        "scheduled_at": "2026-08-01T17:00:00Z"}'
 
 # Delivery receipt (per-platform status, live URL, or error detail)
-curl -s "$POSTGUARD_URL/api/v1/post-results?post_id=<post-uuid>" \
-  -H "Authorization: Bearer $POSTGUARD_API_KEY"
+curl -s "$XPOST_URL/api/v1/post-results?post_id=<post-uuid>" \
+  -H "Authorization: Bearer $XPOST_API_KEY"
 
 # Bulk (up to 100 rows) — JSON rows, or POST a CSV with
 # header caption,accounts[,scheduled_at,media_urls] ("|" separates
 # multi-values inside a cell). Every row runs the normal guardrail +
 # approval path; the response reports each row separately.
-curl -s -X POST "$POSTGUARD_URL/api/v1/posts/bulk" \
-  -H "Authorization: Bearer $POSTGUARD_API_KEY" \
+curl -s -X POST "$XPOST_URL/api/v1/posts/bulk" \
+  -H "Authorization: Bearer $XPOST_API_KEY" \
   -H "Content-Type: text/csv" \
   --data-binary @posts.csv
 ```
