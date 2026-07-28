@@ -1,6 +1,6 @@
-# xPost agent skill
+# xpost agent skill
 
-Give any Claude-family agent the ability to post through xPost — with the
+Give any Claude-family agent the ability to post through xpost — with the
 approval queue and guardrails enforced server-side, so the skill can't be
 prompt-injected into bypassing them.
 
@@ -21,7 +21,7 @@ claude mcp add xpost -e XPOST_API_KEY=xp_live_... \
 ```
 
 …or export `XPOST_URL` + `XPOST_API_KEY` for the REST fallback the
-skill documents. Create the key in xPost → Dashboard → API keys (agent
+skill documents. Create the key in xpost → Dashboard → API keys (agent
 key, so copilot approval applies).
 
 When this repo goes public, the skill will be installable directly from

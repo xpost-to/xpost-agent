@@ -1,11 +1,11 @@
 ---
 name: xpost
-description: Post to social media through xPost — draft, schedule, and check delivery across X, Instagram, Bluesky, TikTok, YouTube, LinkedIn, Facebook, Threads, and Pinterest, with human approval and brand guardrails enforced. Use when asked to post, schedule, or cross-post social content, or to check whether a post was delivered.
+description: Post to social media through xpost — draft, schedule, and check delivery across X, Instagram, Bluesky, TikTok, YouTube, LinkedIn, Facebook, Threads, and Pinterest, with human approval and brand guardrails enforced. Use when asked to post, schedule, or cross-post social content, or to check whether a post was delivered.
 ---
 
-# Posting through xPost
+# Posting through xpost
 
-xPost is the posting layer between you and the user's social audience.
+xpost is the posting layer between you and the user's social audience.
 Every post you create passes brand guardrails, and in copilot mode it is held
 for the user's approval before anything publishes. This is by design — never
 try to work around it.
@@ -74,7 +74,7 @@ curl -s -X POST "$XPOST_URL/api/v1/posts/bulk" \
    - `pending_approval` — expected in copilot mode. Tell the user their
      approval is needed (dashboard or Telegram); do NOT retry or treat it as
      an error.
-   - `422 Blocked by workspace guardrails` — the caption violated a brand
+   - `422 Blocked by project guardrails` — the caption violated a brand
      rule; the violations array says which. Rewrite the caption to comply and
      try once more. Never attempt to evade a guardrail.
    - `scheduled` / `posted` — done; report the scheduled time.
