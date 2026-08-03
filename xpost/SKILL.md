@@ -52,7 +52,7 @@ curl -s -X POST "$XPOST_URL/api/v1/posts/bulk" \
 
 ## Workflow
 
-1. **Attach media when needed** — call `upload_media` with a local file `path` or a public `url` to get a media_id. Instagram/TikTok/YouTube/Pinterest REQUIRE media. For a video you can pick the cover frame by passing `thumbnail_timestamp_ms` (ms into the video) when uploading via the REST API.
+1. **Attach media when needed** — call `upload_media` with a local file `path` or a public `url` to get a media_id. Instagram/TikTok/YouTube/Pinterest REQUIRE media. For a video you can pick the cover frame by passing `thumbnail_timestamp_ms` (ms into the video) when uploading via the REST API. A **PDF** is a LinkedIn document post (each page a swipeable slide): one PDF, attached on its own, LinkedIn only — set the LinkedIn option `document_title` to name it, or it takes the file's name.
 2. **List accounts first** — you need account ids, and the platforms tell you
    the constraints (e.g. Instagram/TikTok/YouTube/Pinterest require media).
 3. **Create the post.** Per-platform caption overrides go in
@@ -65,7 +65,11 @@ curl -s -X POST "$XPOST_URL/api/v1/posts/bulk" \
    at create time with a clear error. For X, `{"x": {"first_comment": "…"}}`
    posts that text as a reply right under the tweet (the link-in-first-comment
    pattern), and `{"x": {"thread": ["tweet 2", "tweet 3"]}}` (up to 4
-   follow-ups) posts a chained thread under the main tweet. When uploading an
+   follow-ups) posts a chained thread under the main tweet. Instagram takes a
+   first comment too — `{"instagram": {"first_comment": "…"}}`, 2200 characters,
+   not on stories — but only for accounts connected through bundle.social;
+   anywhere else Instagram refuses to post the comment and the create call
+   fails, naming the account. When uploading an
    image you can pass `alt_text` (accessibility description — applied on X
    and Bluesky). Every text field — caption, overrides, first comment, thread
    tweets — goes through the workspace guardrails; hiding content in an
