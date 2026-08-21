@@ -69,7 +69,17 @@ curl -s -X POST "$XPOST_URL/api/v1/posts/bulk" \
    first comment too — `{"instagram": {"first_comment": "…"}}`, 2200 characters,
    not on stories — but only for accounts connected through bundle.social;
    anywhere else Instagram refuses to post the comment and the create call
-   fails, naming the account. When uploading an
+   fails, naming the account. Threads takes `topic_tag` (one word), a
+   `reply_control` audience, a poll (`poll_option_a` … `poll_option_d`, at
+   least two, and only on a post with no media — the API is the only way to
+   set one; the dashboard has no poll fields), a `gif_id` (a giphy.com link
+   — also media-free) and `crosspost_ig_story`. Where the poster has been paid
+   or the content is AI-made, the platforms' own labels are options rather than
+   something to write in the caption: `is_paid_partnership` (+
+   `branded_content_sponsors`) and `is_ai_generated` on Instagram,
+   `is_brand_content` / `is_organic_brand_content` / `is_ai_generated` on
+   TikTok, `has_paid_product_placement` / `contains_synthetic_media` on
+   YouTube, `is_ai_generated` on Pinterest. When uploading an
    image you can pass `alt_text` (accessibility description — applied on X
    and Bluesky). Every text field — caption, overrides, first comment, thread
    tweets — goes through the workspace guardrails; hiding content in an
