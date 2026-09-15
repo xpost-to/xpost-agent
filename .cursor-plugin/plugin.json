@@ -1,0 +1,15 @@
+{
+  "name": "xpost",
+  "version": "1.0.0",
+  "description": "Draft, schedule, edit and check delivery of posts on X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest through xpost. Bundles the hosted xpost MCP server (sign in once, no keys) and the skill that teaches the workflow: approval queue, brand guardrails, per-account receipts.",
+  "author": {
+    "name": "xpost",
+    "email": "mail@xpost.to"
+  },
+  "homepage": "https://xpost.to",
+  "repository": "https://github.com/xpost-to/xpost-agent",
+  "license": "MIT",
+  "logo": "assets/logo.svg",
+  "keywords": ["social-media", "scheduling", "x", "twitter", "instagram", "linkedin", "tiktok", "youtube", "threads", "bluesky", "pinterest", "facebook", "mcp"],
+  "skills": ["./skills/xpost"]
+}

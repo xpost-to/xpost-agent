@@ -1,0 +1,12 @@
+{
+  "name": "xpost",
+  "version": "1.0.0",
+  "description": "Post to X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest through xpost. Bundles the hosted xpost MCP server — Gemini CLI opens a browser to sign in to xpost on first use; no token, no local install — and the skill that teaches the workflow. Every post waits for the person's approval.",
+  "contextFileName": "GEMINI.md",
+  "mcpServers": {
+    "xpost": {
+      "type": "http",
+      "url": "https://xpost.to/api/mcp"
+    }
+  }
+}

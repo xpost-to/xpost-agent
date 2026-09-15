@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "xpost": {
+      "type": "http",
+      "url": "https://xpost.to/api/mcp"
+    }
+  }
+}
