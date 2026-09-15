@@ -64,6 +64,42 @@ Or add it by hand in **Settings → Tools & Integrations → New MCP Server**:
 Then `npx skills add xpost-to/xpost-agent` for the skill. The repo also
 carries a Cursor plugin manifest (`.cursor-plugin/plugin.json`).
 
+### Grok Build
+
+The repo carries a Grok Build plugin manifest (`.grok-plugin/plugin.json`,
+skill + hosted MCP server) and its own marketplace catalog
+(`.grok-plugin/marketplace.json`). Inside Grok Build, `/marketplace` browses
+the catalog; from a shell, `grok plugin install xpost --trust` once the
+source is known to it. Not yet in the official xAI index.
+
+### Muse Code (Meta)
+
+Add the hosted server to `~/.config/muse/settings.json`; Muse Code asks you
+to sign in on the first tool call:
+
+```json
+{
+  "schema_version": 1,
+  "mcp_servers": {
+    "xpost": { "transport": "streamable_http", "url": "https://xpost.to/api/mcp" }
+  }
+}
+```
+
+### Grok, Muse and other chat assistants with no MCP settings
+
+Paste this into the chat. The assistant sets itself up and asks you for an
+API key (Project → AI agent → Keys on xpost):
+
+> Set up xpost so you can post to my social accounts. The REST API is
+> https://xpost.to/api/v1 (spec at https://xpost.to/api/v1/openapi.json),
+> authenticated with an `Authorization: Bearer YOUR_KEY` header. If you can run
+> commands, `npx xpost` wraps it and `npx skills add xpost-to/xpost-agent`
+> installs the workflow. Ask me for my xpost API key and set it as
+> XPOST_API_KEY before doing anything. Start with the accounts list. Every
+> post you create waits for my approval — never say a post is published
+> until the receipt says so.
+
 ### ChatGPT, Claude.ai, Claude Desktop
 
 ChatGPT: xpost is in the plugin directory — find it, add it, sign in.

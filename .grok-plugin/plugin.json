@@ -1,0 +1,23 @@
+{
+  "name": "xpost",
+  "version": "1.0.0",
+  "description": "Post to X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest through xpost. Every post waits for the person's approval. Bundles the hosted xpost MCP server (sign in on first use, no token) and the skill that teaches the workflow.",
+  "author": {
+    "name": "xpost",
+    "email": "mail@xpost.to",
+    "url": "https://xpost.to"
+  },
+  "homepage": "https://xpost.to/docs/skill",
+  "repository": "https://github.com/xpost-to/xpost-agent",
+  "license": "MIT",
+  "logo": "assets/logo.svg",
+  "keywords": ["xpost", "social media", "schedule social media posts", "social media scheduler", "approval queue", "mcp"],
+  "skills": ["./skills/xpost"],
+  "mcpServers": {
+    "xpost": {
+      "type": "http",
+      "url": "https://xpost.to/api/mcp",
+      "note": "The hosted xpost MCP server (streamable HTTP). Authorizes via OAuth on first connection — the agent is prompted to sign in to xpost; no token or local install required."
+    }
+  }
+}

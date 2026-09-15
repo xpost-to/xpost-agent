@@ -1,0 +1,19 @@
+{
+  "name": "xpost-agent",
+  "description": "Post to 9 social networks from Grok Build. Every post waits for your approval.",
+  "owner": {
+    "name": "xpost",
+    "email": "mail@xpost.to"
+  },
+  "plugins": [
+    {
+      "name": "xpost",
+      "description": "Post to X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest through xpost. Every post waits for the person's approval. Bundles the hosted xpost MCP server and the skill that teaches the workflow.",
+      "category": "productivity",
+      "source": { "type": "local", "path": "./" },
+      "homepage": "https://xpost.to",
+      "keywords": ["xpost", "social media", "schedule social media posts", "social media scheduler", "mcp"],
+      "domains": ["xpost.to"]
+    }
+  ]
+}
