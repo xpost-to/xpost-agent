@@ -55,7 +55,7 @@ Raw HTTP works too: `XPOST_URL` (default `https://xpost.to`) +
 | Learn the project: timezone, approval mode, signature, guardrails, allowance | `get_project` |
 | See destinations and what each can carry | `list_accounts` |
 | The exact options an account takes (placements, first comment, boards…) | `get_posting_rules` |
-| Attach a file the user gave you (path, URL, or a chat attachment) | `get_upload_ticket` → `upload_media` |
+| Attach a file the user gave you (path, URL, or a chat attachment) | `upload_media` — or `create_post` with `files` / `media_pending` |
 | Create one post | `create_post` |
 | Create many | `bulk_post` |
 | Find posts, see verdicts and rejection reasons | `list_posts` |
@@ -83,11 +83,18 @@ Raw HTTP works too: `XPOST_URL` (default `https://xpost.to`) +
 3. **Media.** Instagram, TikTok, YouTube and Pinterest require it; stories
    and reels do too. `upload_media` takes a local `path` (stdio server only),
    a public `url`, or base64 `data`. A picture, video or PDF the user
-   attached to the chat has a route: `get_upload_ticket`, then
-   `upload_media` with the ticket — it reaches xpost through the user's own
-   browser. Redeeming a ticket the person has filled answers with every file
-   on it; pass the `upload_ticket` itself to `create_post` so nothing is
-   left out. A PDF is a LinkedIn document post: one PDF, alone, LinkedIn only.
+   attached to the chat goes ON THE POST, two ways:
+   - Your host hands attachments over as file objects (ChatGPT does): pass
+     them as `files` on `create_post` or `update_post`, in post order.
+   - Otherwise create the post with `media_pending: true`. It is held, and
+     the approval card that comes back carries a drop zone: the person adds
+     the picture there, straight onto the post, and approves in the same
+     card. Nothing comes back to you; the post simply has its picture. To
+     check, `list_posts` shows `mediaIds`.
+   "I've added another photo" therefore needs nothing from you — it is
+   already on the post. To add one from the chat, `update_post` with `files`
+   or `add_media_ids`; `media_ids` replaces the set.
+   A PDF is a LinkedIn document post: one PDF, alone, LinkedIn only.
 4. **`create_post`.** `scheduled_at` is ISO 8601 with an offset, in the
    project's timezone (from `get_project`); omit it and the post goes out on
    approval. **`"next_slot"`** hands the time to the project's own posting
@@ -148,6 +155,6 @@ not zero, and stories are never reported on by anyone. `get_insights` for
 - A guardrail block means rewrite once; a held post means tell the person.
 - Report outcomes faithfully, including partial ones: "delivered to X,
   failed on Instagram: <reason>".
-- Never speak about upload plumbing (sandboxes, hosts, tickets). The card
-  says what it needs to say; your words go on what is still open, like a
-  missing caption.
+- Upload plumbing (sandboxes, hosts, slots) is not something the person can
+  act on. The card says what it needs; your words go on what is still open,
+  like a missing caption.
