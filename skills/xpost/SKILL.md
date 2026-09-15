@@ -90,7 +90,11 @@ Raw HTTP works too: `XPOST_URL` (default `https://xpost.to`) +
    left out. A PDF is a LinkedIn document post: one PDF, alone, LinkedIn only.
 4. **`create_post`.** `scheduled_at` is ISO 8601 with an offset, in the
    project's timezone (from `get_project`); omit it and the post goes out on
-   approval. `is_draft: true` files a scratchpad draft — no queue, no
+   approval. **`"next_slot"`** hands the time to the project's own posting
+   schedule — use it when the person says "queue it", or names no time and
+   `get_project` shows `queue.configured: true` (its `next_slots` are what
+   they will get). Refused as `no_queue_slots` where there is no schedule;
+   then ask for a time rather than inventing one. `is_draft: true` files a scratchpad draft — no queue, no
    approval link; the person sends it from its page. Per-account words and
    options go in `platform_configurations`, keyed by platform:
    `{"x": {"caption": "shorter", "first_comment": "…", "thread": ["…"]}}`,
@@ -105,7 +109,9 @@ Raw HTTP works too: `XPOST_URL` (default `https://xpost.to`) +
      violations name the rule in `violations[].detail`: rewrite once to
      comply, never evade. A missing plan (`publishing_needs_plan`) or a
      missing account comes with a `message` written to be passed on.
-6. **Before assuming a post is still waiting, `list_posts`.** The person can
+6. **Before assuming a post is still waiting, `list_posts`.** Its `from` /
+   `to` bound the scheduled time, so "what goes out next week" is one call,
+   soonest first. The person can
    reject through a link you never see; a `rejected` row carries
    `rejectionReason`, which is what to fix. To change anything, `update_post`
    — it answers with a **new id**, and an edit to an approved post goes back
