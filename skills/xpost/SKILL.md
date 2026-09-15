@@ -26,22 +26,27 @@ user how — no key required:
 - ChatGPT: xpost is in the plugin directory — find it, add it, sign in.
 - Claude.ai / Claude Desktop: Settings → Connectors → Add custom connector, paste `https://xpost.to/api/mcp`, sign in.
 
-**Fallback: the REST API**, with `XPOST_URL` (default `https://xpost.to`)
-and `XPOST_API_KEY` (an agent key from Project → AI agent → Keys). Full spec
-at `$XPOST_URL/api/v1/openapi.json`; every MCP tool below is one route there.
+**Fallback: the `xpost` CLI** (`npx xpost`, zero install), when there is no
+MCP client — a shell, a script, a headless box. Every command is one route of
+the public API and answers with the API's own JSON; a refusal prints the
+body and exits 1, so read `error_code`. Sign in once with `npx xpost login`
+(a browser opens), or set `XPOST_API_KEY` where no browser can. The tool
+names below map one to one:
 
 ```bash
-# accounts you may post to, with what each one can carry
-curl -s "$XPOST_URL/api/v1/social-accounts" -H "Authorization: Bearer $XPOST_API_KEY"
-
-# create a post (omit scheduled_at → goes out once approved)
-curl -s -X POST "$XPOST_URL/api/v1/posts" \
-  -H "Authorization: Bearer $XPOST_API_KEY" -H "Content-Type: application/json" \
-  -d '{"caption":"…","social_accounts":["<account-uuid>"],"scheduled_at":"2026-10-01T09:00:00+02:00"}'
-
-# delivery receipt: one row per destination, live link or the reason it failed
-curl -s "$XPOST_URL/api/v1/post-results?post_id=<post-uuid>" -H "Authorization: Bearer $XPOST_API_KEY"
+npx xpost project                      # get_project
+npx xpost accounts                     # list_accounts
+npx xpost rules <accountId>            # get_posting_rules
+npx xpost upload ./pic.jpg --alt "…"   # upload_media → media id
+npx xpost posts create -c "…" -a <account> [-a …] [--media <id>] [--at 2026-10-01T09:00:00+02:00] [--draft] [--config '{"x":{"first_comment":"…"}}']
+npx xpost posts list --status pending_approval,rejected
+npx xpost posts edit <postId> -c "…"   # update_post — answers with a NEW id
+npx xpost posts delete <postId>
+npx xpost receipt <postId>             # get_delivery_receipt
 ```
+
+Raw HTTP works too: `XPOST_URL` (default `https://xpost.to`) +
+`Authorization: Bearer $XPOST_API_KEY`, spec at `$XPOST_URL/api/v1/openapi.json`.
 
 ## The tools
 

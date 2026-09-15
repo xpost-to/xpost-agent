@@ -70,6 +70,16 @@ ChatGPT: xpost is in the plugin directory — find it, add it, sign in.
 Claude: **Settings → Connectors → Add custom connector**, paste
 `https://xpost.to/api/mcp`, sign in.
 
+### No MCP client at all — the CLI
+
+```bash
+npx xpost login
+npx xpost posts create -c "Shipped it." -a x:yourhandle
+```
+
+The `xpost` package on npm is the CLI, the local MCP server (`npx xpost mcp`)
+and the skill's fallback in one. Docs: https://xpost.to/docs/cli
+
 ## What the skill teaches
 
 - Accounts first: `list_accounts` names every destination and what it can carry.
