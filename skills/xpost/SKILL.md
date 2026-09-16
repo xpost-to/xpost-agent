@@ -89,10 +89,15 @@ Raw HTTP works too: `XPOST_URL` (default `https://xpost.to`) +
    - Your host hands attachments over as file objects (ChatGPT does): pass
      them as `files` on `create_post` or `update_post`, in post order.
    - Otherwise create the post with `media_pending: true`. It is held, and
-     the approval card that comes back carries a drop zone: the person adds
-     the picture there, straight onto the post, and approves in the same
-     card. Nothing comes back to you; the post simply has its picture. To
-     check, `list_posts` shows `mediaIds`.
+     the reply carries `upload_url` and `upload_curl`: if the file is in
+     your environment, run that command (YOUR_FILE replaced) and the picture
+     lands on the post — nothing passes through a tool argument, so no host
+     asks anyone to allow an opaque payload. Where you cannot run it, the
+     approval card that came back carries a drop zone: the person adds the
+     picture there, straight onto the post, and approves in the same card.
+     Either way nothing comes back to you; the post simply has its picture.
+     To check, `list_posts` shows `mediaIds`. Base64 `data` on
+     `upload_media` is for something you generated, not the user's file.
    "I've added another photo" therefore needs nothing from you — it is
    already on the post. To add one from the chat, `update_post` with `files`
    or `add_media_ids`; `media_ids` replaces the set.
