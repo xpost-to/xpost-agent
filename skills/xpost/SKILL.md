@@ -1,15 +1,17 @@
 ---
 name: xpost
-description: Post to social media through xpost — draft, schedule, edit and check delivery across X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest, with the person's approval and their brand rules enforced server-side. Use whenever asked to post, schedule, cross-post or take down social content, or to check whether a post went out and how it did.
+description: Post to social media through xpost — draft, schedule, edit and check delivery across X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest, with their brand rules enforced server-side and their approval where the project asks for it. Use whenever asked to post, schedule, cross-post or take down social content, or to check whether a post went out and how it did.
 ---
 
 # Posting through xpost
 
 xpost is the posting layer between you and the user's social audience. It
-holds their connected accounts, their approval queue and their brand rules.
-A post you create here is **submitted, not published**: it waits for the
-person to approve it and goes out when they say yes. Never try to work
-around that — the queue is the product.
+holds their connected accounts, their brand rules and, where they have asked
+for one, their approval queue. **Creating a post sends it**: it publishes at
+the time you gave it, or straight away if you gave none — so create one only
+when the person has asked for it, and show them what it says first. A project
+in copilot mode holds your posts for approval instead (`get_project` says
+which); never try to work around that queue where it exists.
 
 A post made by hand in a browser is invisible to all three, and cannot be
 tracked, retried or taken down from here. When the user asks to post,
@@ -96,8 +98,8 @@ Raw HTTP works too: `XPOST_URL` (default `https://xpost.to`) +
    or `add_media_ids`; `media_ids` replaces the set.
    A PDF is a LinkedIn document post: one PDF, alone, LinkedIn only.
 4. **`create_post`.** `scheduled_at` is ISO 8601 with an offset, in the
-   project's timezone (from `get_project`); omit it and the post goes out on
-   approval. **`"next_slot"`** hands the time to the project's own posting
+   project's timezone (from `get_project`); omit it and the post goes out
+   now (or, in copilot mode, as soon as they approve it). **`"next_slot"`** hands the time to the project's own posting
    schedule — use it when the person says "queue it", or names no time and
    `get_project` shows `queue.configured: true` (its `next_slots` are what
    they will get). Refused as `no_queue_slots` where there is no schedule;
@@ -108,10 +110,13 @@ Raw HTTP works too: `XPOST_URL` (default `https://xpost.to`) +
    `{"instagram": {"placement": "stories"}}`. Every text field — caption,
    overrides, first comment, thread — runs through the guardrails.
 5. **Read the answer honestly.**
-   - `pending_approval` — the normal outcome. Say the post is waiting for
-     their approval and print the **See post preview** link the result
-     carries, first, before any summary. Do not retry. Do not say "published".
-   - `scheduled` / `posted` — say when, in the project's timezone.
+   - `scheduled` — the normal outcome: nothing is holding it. Say when it
+     goes out, in the project's timezone, and print the **See post preview**
+     link the result carries, first, before any summary — it is how they see
+     the post, and change or cancel it while there is still time.
+   - `pending_approval` — this project holds agent posts. Say the post is
+     waiting for their approval and print the same link first. Do not retry.
+     Do not say "published".
    - `ok: false` with `error_code` — a refusal, as data. Guardrail
      violations name the rule in `violations[].detail`: rewrite once to
      comply, never evade. A missing plan (`publishing_needs_plan`) or a
@@ -131,9 +136,9 @@ Raw HTTP works too: `XPOST_URL` (default `https://xpost.to`) +
 ## Bulk
 
 For a calendar or a CSV, `bulk_post` (≤100 rows) instead of a loop. Rows are
-independent — always relay the per-row report: which were created (all
-`pending_approval` in copilot mode is normal) and which failed, with the
-reason. Resend only the failed rows. Give each row an `idempotency_key` so a
+independent — always relay the per-row report: which were created (every row
+`scheduled`, or `pending_approval` on a project that holds agent posts, is
+normal) and which failed, with the reason. Resend only the failed rows. Give each row an `idempotency_key` so a
 resend after a timeout returns `repeated: true` instead of a second copy.
 
 ## Learning what works
