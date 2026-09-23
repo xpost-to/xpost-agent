@@ -4,6 +4,8 @@
 
 # xpost for your assistant
 
+[![smithery badge](https://smithery.ai/badge/xpost-to/xpost)](https://smithery.ai/servers/xpost-to/xpost)
+
 Post to X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky
 and Pinterest from Claude, Cursor, Gemini CLI or any MCP client. Every post
 the assistant makes reaches you — mailed before it goes out or the moment it
