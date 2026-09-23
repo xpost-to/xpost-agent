@@ -6,7 +6,7 @@
     "email": "mail@xpost.to",
     "url": "https://xpost.to"
   },
-  "description": "Post to 9 social networks from your assistant. Every post waits for your approval.",
+  "description": "Post to 9 social networks from your assistant. You see every post it makes.",
   "plugins": [
     {
       "name": "xpost",

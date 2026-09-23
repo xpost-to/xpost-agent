@@ -6,9 +6,10 @@
 
 Post to X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky
 and Pinterest from Claude, Cursor, Gemini CLI or any MCP client. Every post
-lands in **your approval queue** first — no key, tool or prompt can approve
-one. Brand guardrails run before anything is queued, and each account gets
-its own delivery receipt.
+the assistant makes reaches you — mailed before it goes out or the moment it
+has — and an approval queue is one switch away; once it is on, no key, tool
+or prompt can approve a post. Brand guardrails run on every post, and each
+account gets its own delivery receipt.
 
 This repo is the open-source **skill** (the workflow an agent should
 follow) plus the plugin manifests that install it together with the hosted
@@ -96,9 +97,9 @@ API key (Project → AI agent → Keys on xpost):
 > authenticated with an `Authorization: Bearer YOUR_KEY` header. If you can run
 > commands, `npx xpost` wraps it and `npx skills add xpost-to/xpost-agent`
 > installs the workflow. Ask me for my xpost API key and set it as
-> XPOST_API_KEY before doing anything. Start with the accounts list. Every
-> post you create waits for my approval — never say a post is published
-> until the receipt says so.
+> XPOST_API_KEY before doing anything. Start with the accounts list. Creating
+> a post sends it, unless my project holds posts for approval — never say a
+> post is published until the receipt says so.
 
 ### ChatGPT, Claude.ai, Claude Desktop
 
@@ -120,7 +121,7 @@ and the skill's fallback in one. Docs: https://xpost.to/docs/cli
 
 - Accounts first: `list_accounts` names every destination and what it can carry.
 - `get_posting_rules` is the option catalog per account; a key that is not there cannot be used.
-- A held post (`pending_approval`) is the normal outcome, not an error. Say so; print the preview link.
+- Creating a post sends it; a project in copilot mode holds it (`pending_approval`) instead. Either is a normal outcome — say which, print the link.
 - A guardrail refusal names the rule. Rewrite once. Never evade.
 - `list_posts` before assuming a post is still waiting — the person may have rejected it with a reason.
 - Receipts are per account: "delivered to X, failed on Instagram: reason".
