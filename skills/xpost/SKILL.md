@@ -128,6 +128,10 @@ Raw HTTP works too: `XPOST_URL` (default `https://xpost.to`) +
      the next attempt, so a caption that meets them is what clears it. A
      missing plan (`publishing_needs_plan`) or a missing account comes with a
      `message` written for the person.
+   - `x_trial_link_limit` — on a trial, only the first five posts with a link
+     go to X; this one won't. The other accounts still get it, and without the
+     link X does too. Pass on the `message`; the receipt's `trial_link_limit`
+     row says the same.
 6. **`list_posts` is the current state of the queue.** Its `from` /
    `to` bound the scheduled time, so "what goes out next week" is one call,
    soonest first. The person can
