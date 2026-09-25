@@ -32,8 +32,7 @@ no key required:
 MCP client — a shell, a script, a headless box. Every command is one route of
 the public API and answers with the API's own JSON; a refusal prints the
 body and exits 1, so `error_code` is the machine-readable half. Sign in once
-with `npx xpost login` (a browser opens), or set `XPOST_API_KEY` where no
-browser can. The tool names below map one to one:
+with `npx xpost login` (a browser opens). The tool names below map one to one:
 
 ```bash
 npx xpost project                      # get_project
@@ -47,8 +46,8 @@ npx xpost posts delete <postId>
 npx xpost receipt <postId>             # get_delivery_receipt
 ```
 
-Raw HTTP works too: `XPOST_URL` (default `https://xpost.to`) +
-`Authorization: Bearer $XPOST_API_KEY`, spec at `$XPOST_URL/api/v1/openapi.json`.
+Raw HTTP works too: the public API at `https://xpost.to/api/v1`, spec at
+`https://xpost.to/api/v1/openapi.json`, set-up at `https://xpost.to/docs/api`.
 
 ## The tools
 
@@ -140,9 +139,15 @@ Raw HTTP works too: `XPOST_URL` (default `https://xpost.to`) +
    — it answers with a **new id**, and an edit to an approved post goes back
    into the queue because the approval was for the old words.
 7. **After publish time, `get_delivery_receipt`.** One row per destination,
-   each with its live link or the reason it failed. `retry_delivery`
-   takes a failed row; `take_down_post` is for when the user asks for it,
-   because there is no undo.
+   each with its live link or the reason it failed. Not straight after
+   `create_post` or `update_post` on a host that draws cards: the card
+   already follows the delivery, and asking again draws the post twice.
+   `retry_delivery` takes a failed row's `id` — a delivery id, not the post
+   id; a post id answers `is_post_id` with the post's `deliveries`, pick the
+   failed one. `take_down_post` is for when the user asks for it, because
+   there is no undo. A delivery that went out and is no longer up says why
+   in `off_platform`: taken down here, deleted on the platform, or a story
+   past its 24 hours; `list_posts` says the same in `offPlatform`.
 
 ## Bulk
 
@@ -175,6 +180,9 @@ not zero, and stories are not reported on by anyone. `get_insights` for
   is fixed by rewriting, the other by waiting.
 - A receipt can be partial — delivered on X, failed on Instagram with its own
   reason — because each destination is independent.
+- X takes one $cashtag per tweet. A second is refused before anything is
+  sent, with the tags named — ask which one to keep, and send only the
+  version they agree to.
 - Upload plumbing (sandboxes, hosts, slots) is nothing the person can act on;
   the card asks them for the file itself. What is open to them is the post: a
   missing caption, the time, the destinations.

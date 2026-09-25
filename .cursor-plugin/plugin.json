@@ -1,6 +1,6 @@
 {
   "name": "xpost",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Draft, schedule, edit and check delivery of posts on X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest through xpost. Bundles the hosted xpost MCP server (sign in once, no keys) and the skill that teaches the workflow: approval queue, brand guardrails, per-account receipts.",
   "author": {
     "name": "xpost",

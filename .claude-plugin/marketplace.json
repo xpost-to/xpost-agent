@@ -13,7 +13,7 @@
       "displayName": "xpost",
       "source": "./",
       "description": "Draft, schedule, edit and check delivery of posts on X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest through xpost — with the hosted MCP server (sign in once, no keys) and the skill that teaches the workflow: approval queue, brand guardrails, per-account receipts.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": "productivity",
       "keywords": ["social-media", "scheduling", "x", "twitter", "instagram", "linkedin", "tiktok", "youtube", "threads", "bluesky", "pinterest", "facebook", "mcp"]
     }
