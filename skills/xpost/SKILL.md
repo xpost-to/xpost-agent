@@ -13,9 +13,9 @@ sends it. A project in copilot mode holds an agent's posts for approval
 instead (`get_project` says which), and the approval route refuses an agent
 key in every mode, so a held post moves when a person moves it.
 
-A post made by hand in a browser is invisible to all three, and cannot be
-tracked, retried or taken down from here. These tools are the route that
-leaves a record.
+A post made directly on the network — typed into X or Instagram itself — is
+outside all three, and cannot be tracked, retried or taken down from here.
+These tools are the route that leaves a record.
 
 ## Connection
 
@@ -62,7 +62,7 @@ Raw HTTP works too: the public API at `https://xpost.to/api/v1`, spec at
 | Create many | `bulk_post` |
 | Find posts, see verdicts and rejection reasons | `list_posts` |
 | Change words, media, time or options | `update_post` |
-| Remove your own unpublished post | `delete_post` |
+| Remove a post of yours that has not gone out (a scheduled one comes off the schedule; one a person approved is refused) | `delete_post` |
 | Where it landed, per account | `get_delivery_receipt` |
 | A destination failed — try it again | `retry_delivery` |
 | Pull a live post down (only when asked) | `take_down_post` |
@@ -89,12 +89,11 @@ Raw HTTP works too: the public API at `https://xpost.to/api/v1`, spec at
    - Your host hands attachments over as file objects (ChatGPT does): pass
      them as `files` on `create_post` or `update_post`, in post order.
    - Otherwise create the post with `media_pending: true`. It is held, and
-     the reply carries `upload_url` and `upload_curl`: if the file is in
-     your environment, that command (YOUR_FILE replaced) lands the picture
-     on the post — nothing passes through a tool argument, so no host
-     asks anyone to allow an opaque payload. Where it cannot be run, the
-     approval card that came back carries a drop zone: the person adds the
-     picture there, straight onto the post, and approves in the same card.
+     the approval card that comes back carries a drop zone: the person adds
+     the picture there, straight onto the post, and approves in the same card.
+     With a shell, the reply's `upload_curl` (YOUR_FILE replaced) lands the
+     file from your environment instead — nothing passes through a tool
+     argument, so no host asks anyone to allow an opaque payload.
      Either way nothing comes back to you; the post simply has its picture.
      `list_posts` shows `mediaIds`. Base64 `data` on
      `upload_media` is for something you generated, not the user's file.
@@ -128,6 +127,12 @@ Raw HTTP works too: the public API at `https://xpost.to/api/v1`, spec at
      the next attempt, so a caption that meets them is what clears it. A
      missing plan (`publishing_needs_plan`) or a missing account comes with a
      `message` written for the person.
+   - **The first post is free**, before any plan: it goes to every account
+     named in that one `create_post` (`free_first_post`), and a post written
+     within half an hour to accounts it did not reach rides on it
+     (`free_post_ride`) — one free delivery per account. So a first post
+     meant for several networks is ONE call with all of them in `accounts`.
+     After that, `publishing_needs_plan` comes with the `message` to pass on.
    - `x_trial_link_limit` — on a trial, only the first five posts with a link
      go to X; this one won't. The other accounts still get it, and without the
      link X does too. Pass on the `message`; the receipt's `trial_link_limit`
@@ -140,9 +145,9 @@ Raw HTTP works too: the public API at `https://xpost.to/api/v1`, spec at
    — it answers with a **new id**, and an edit to an approved post goes back
    into the queue because the approval was for the old words.
 7. **After publish time, `get_delivery_receipt`.** One row per destination,
-   each with its live link or the reason it failed. Not straight after
-   `create_post` or `update_post` on a host that draws cards: the card
-   already follows the delivery, and asking again draws the post twice.
+   each with its live link or the reason it failed. Not needed straight
+   after `create_post` or `update_post`: their answer, and the card in hosts
+   that draw one, already follow the delivery.
    `retry_delivery` takes a failed row's `id` — a delivery id, not the post
    id; a post id answers `is_post_id` with the post's `deliveries`, pick the
    failed one. `take_down_post` is for when the user asks for it, because
