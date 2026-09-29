@@ -23,7 +23,7 @@ These tools are the route that leaves a record.
 tools below and nothing else is needed. If it is not connected, here is how —
 no key required:
 
-- Claude Code with the xpost plugin installed: the server is already there, signed out. Tell them to type `/mcp`, pick xpost and choose Authenticate. Don't add it again with `claude mcp add` — that makes a second copy.
+- Claude Code with the xpost plugin installed: the server is already there, signed out. Tell them to type `/mcp`, pick xpost and choose Authenticate. Don't have them run `claude mcp add` too — it isn't needed.
 - Claude Code without the plugin: `claude mcp add --transport http xpost https://xpost.to/api/mcp`, then `/mcp` → xpost → Authenticate.
 - Cursor / Windsurf / Gemini CLI / VS Code: add `https://xpost.to/api/mcp` as an HTTP MCP server; the client opens the sign-in page.
 - ChatGPT: xpost is in the plugin directory — find it, add it, sign in.
