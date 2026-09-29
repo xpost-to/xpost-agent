@@ -39,7 +39,8 @@ or let the skill's REST fallback use `XPOST_API_KEY`.
 /plugin install xpost@xpost-agent
 ```
 
-Then `/mcp` → **xpost** → sign in. Or without the plugin:
+Nothing prompts you to sign in: type `/mcp`, choose **xpost**, then
+**Authenticate** — your browser opens on the sign-in page. Or without the plugin:
 
 ```bash
 claude mcp add --transport http xpost https://xpost.to/api/mcp
