@@ -1,13 +1,13 @@
 ---
 name: xpost
-description: Post to social media through xpost — draft, schedule, edit and check delivery across X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest, with their brand rules enforced server-side and their approval where the project asks for it. Use whenever asked to post, schedule, cross-post or take down social content, or to check whether a post went out and how it did.
+description: Post to social media through xpost — draft, schedule, edit and check delivery across X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest, with their approval where the project asks for it. Use whenever asked to post, schedule, cross-post or take down social content, or to check whether a post went out and how it did.
 ---
 
 # Posting through xpost
 
 xpost is the posting layer between you and the user's social audience. It
-holds their connected accounts, their brand rules and, where they have asked
-for one, their approval queue. **Creating a post sends it**: it publishes at
+holds their connected accounts and, where they have asked for one, their
+approval queue. **Creating a post sends it**: it publishes at
 the time given, or straight away when none is — there is no second step that
 sends it. A project in copilot mode holds an agent's posts for approval
 instead (`get_project` says which), and the approval route refuses an agent
@@ -54,7 +54,7 @@ Raw HTTP works too: the public API at `https://xpost.to/api/v1`, spec at
 
 | Do this | Tool |
 |---|---|
-| Learn the project: timezone, approval mode, signature, guardrails, allowance | `get_project` |
+| Learn the project: timezone, approval mode, allowance | `get_project` |
 | See destinations and what each can carry | `list_accounts` |
 | The exact options an account takes (placements, first comment, boards…) | `get_posting_rules` |
 | Attach a file the user gave you (path, URL, or a chat attachment) | `upload_media` — or `create_post` with `files` / `media_pending` |
@@ -67,7 +67,6 @@ Raw HTTP works too: the public API at `https://xpost.to/api/v1`, spec at
 | A destination failed — try it again | `retry_delivery` |
 | Pull a live post down (only when asked) | `take_down_post` |
 | Which accounts need reconnecting | `list_connection_issues` |
-| Test a caption against the rules before writing more | `check_guardrails` |
 | Learn what works | `get_post_metrics`, `get_insights`, `get_top_posts`, `get_best_times` |
 
 ## Workflow
@@ -111,8 +110,7 @@ Raw HTTP works too: the public API at `https://xpost.to/api/v1`, spec at
    approval link; the person sends it from its page. Per-account words and
    options go in `platform_configurations`, keyed by platform:
    `{"x": {"caption": "shorter", "first_comment": "…", "thread": ["…"]}}`,
-   `{"instagram": {"placement": "stories"}}`. Every text field — caption,
-   overrides, first comment, thread — runs through the guardrails.
+   `{"instagram": {"placement": "stories"}}`.
 5. **What the answer means.**
    - `scheduled` — the normal outcome: nothing is holding it. `publishes` is
      when it goes out, on the project's clock, and the **See post preview**
@@ -122,9 +120,9 @@ Raw HTTP works too: the public API at `https://xpost.to/api/v1`, spec at
    - `pending_approval` — this project holds agent posts. It is waiting on a
      person, it has not published, and the call has already landed; the same
      preview link is where they see it.
-   - `ok: false` with `error_code` — a refusal, as data. Guardrail violations
-     name the rule in `violations[].detail`, and the same rules run again on
-     the next attempt, so a caption that meets them is what clears it. A
+   - `ok: false` with `error_code` — a refusal, as data. Any `violations`
+     name the reason in `violations[].detail`, and the same check runs again
+     on the next attempt, so a post that meets it is what clears it. A
      missing plan (`publishing_needs_plan`) or a missing account comes with a
      `message` written for the person.
    - **The first post is free**, before any plan: it goes to every account
@@ -182,8 +180,8 @@ not zero, and stories are not reported on by anyone. `get_insights` for
   them is sent.
 - The time that will happen is `publishes` in the answer, on the project's
   clock — a request's `scheduled_at` is what was asked for, not what came back.
-- A guardrail refusal is about the words; a held post is about a person. One
-  is fixed by rewriting, the other by waiting.
+- A refusal is about the post; a held post is about a person. One is fixed
+  by changing it, the other by waiting.
 - A receipt can be partial — delivered on X, failed on Instagram with its own
   reason — because each destination is independent.
 - X takes one $cashtag per tweet. A second is refused before anything is
