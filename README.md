@@ -107,7 +107,9 @@ API key (Project → AI agent → Keys on xpost):
 ### ChatGPT, Claude.ai, Claude Desktop
 
 ChatGPT: xpost is in the plugin directory — find it, add it, sign in.
-Claude: **Settings → Connectors → Add custom connector**, paste
+Claude with the xpost plugin installed: **Customize → Connectors**, find
+xpost, press **Connect**, sign in — the plugin brings the connector, signed out.
+Without the plugin: **Customize → Connectors → Add → custom connector**, paste
 `https://xpost.to/api/mcp`, sign in.
 
 ### No MCP client at all — the CLI

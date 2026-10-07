@@ -17,17 +17,26 @@ A post made directly on the network — typed into X or Instagram itself — is
 outside all three, and cannot be tracked, retried or taken down from here.
 These tools are the route that leaves a record.
 
-## Connection
+## Connection — check this first
 
-**Preferred: the `xpost` MCP server.** If it is connected you have the
-tools below and nothing else is needed. If it is not connected, here is how —
-no key required:
+**Preferred: the `xpost` MCP server.** If you have tools like `get_project`
+and `list_accounts`, it is connected and nothing else is needed.
 
+**If you don't have them, xpost is not connected yet** — even when this skill
+is installed. Installing the xpost plugin brings the connector signed out,
+and nothing prompts the person to sign in, so they usually don't know. Before
+anything else, tell them in one or two sentences that xpost needs connecting
+once and exactly where, from the list below; then carry on when they're back.
+Don't draft the post first, and don't reach for the CLI or raw HTTP instead
+unless they ask — a signed-in connector is what they installed. No key is
+needed anywhere:
+
+- Claude.ai, Claude Desktop or Cowork with the xpost plugin installed: **Customize → Connectors**, find xpost, press **Connect** and sign in. Don't have them add a custom connector too — it would be a second copy.
+- Claude.ai / Claude Desktop without the plugin: Customize → Connectors → Add → custom connector, paste `https://xpost.to/api/mcp`, sign in.
 - Claude Code with the xpost plugin installed: the server is already there, signed out. Tell them to type `/mcp`, pick xpost and choose Authenticate. Don't have them run `claude mcp add` too — it isn't needed.
 - Claude Code without the plugin: `claude mcp add --transport http xpost https://xpost.to/api/mcp`, then `/mcp` → xpost → Authenticate.
 - Cursor / Windsurf / Gemini CLI / VS Code: add `https://xpost.to/api/mcp` as an HTTP MCP server; the client opens the sign-in page.
 - ChatGPT: xpost is in the plugin directory — find it, add it, sign in.
-- Claude.ai / Claude Desktop: Settings → Connectors → Add custom connector, paste `https://xpost.to/api/mcp`, sign in.
 
 **Fallback: the `xpost` CLI** (`npx xpost`, zero install), when there is no
 MCP client — a shell, a script, a headless box. Every command is one route of
