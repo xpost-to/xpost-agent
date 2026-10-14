@@ -6,12 +6,10 @@
 
 [![smithery badge](https://smithery.ai/badge/xpost-to/xpost)](https://smithery.ai/servers/xpost-to/xpost)
 
-Post to X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky
-and Pinterest from Claude, Cursor, Gemini CLI or any MCP client. Every post
-the assistant makes reaches you — mailed before it goes out or the moment it
-has — and an approval queue is one switch away; once it is on, no key, tool
-or prompt can approve a post. Brand guardrails run on every post, and each
-account gets its own delivery receipt.
+Post all your social media with your AI agent: X, Instagram, LinkedIn,
+Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest, from Claude,
+ChatGPT, Cursor, Gemini CLI or any MCP client. Want a say first? Switch on
+approvals and nothing goes out until a person says yes.
 
 This repo is the open-source **skill** (the workflow an agent should
 follow) plus the plugin manifests that install it together with the hosted
@@ -107,7 +105,9 @@ API key (Project → AI agent → Keys on xpost):
 ### ChatGPT, Claude.ai, Claude Desktop
 
 ChatGPT: xpost is in the plugin directory — find it, add it, sign in.
-Claude: **Settings → Connectors → Add custom connector**, paste
+Claude with the xpost plugin installed: **Customize → Connectors**, find
+xpost, press **Connect**, sign in — the plugin brings the connector, signed out.
+Without the plugin: **Customize → Connectors → Add → custom connector**, paste
 `https://xpost.to/api/mcp`, sign in.
 
 ### No MCP client at all — the CLI

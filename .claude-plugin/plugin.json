@@ -1,8 +1,8 @@
 {
   "name": "xpost",
   "displayName": "xpost",
-  "version": "1.0.2",
-  "description": "Draft, schedule, edit and check delivery of posts on X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest through xpost. Bundles the hosted xpost MCP server (sign in once, no keys) and the skill that teaches the workflow: approval queue, brand guardrails, per-account receipts.",
+  "version": "1.0.3",
+  "description": "Post all your social media with your AI agent: X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest. Bundles the hosted xpost MCP server (sign in once, no keys) and the skill that teaches your assistant to write, schedule, edit and publish posts there.",
   "author": {
     "name": "xpost",
     "email": "mail@xpost.to",

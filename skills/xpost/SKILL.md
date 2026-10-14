@@ -1,13 +1,13 @@
 ---
 name: xpost
-description: Post to social media through xpost — draft, schedule, edit and check delivery across X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest, with their brand rules enforced server-side and their approval where the project asks for it. Use whenever asked to post, schedule, cross-post or take down social content, or to check whether a post went out and how it did.
+description: Post to social media through xpost — draft, schedule, edit and check delivery across X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest, with their approval where the project asks for it. Use whenever asked to post, schedule, cross-post or take down social content, or to check whether a post went out and how it did.
 ---
 
 # Posting through xpost
 
 xpost is the posting layer between you and the user's social audience. It
-holds their connected accounts, their brand rules and, where they have asked
-for one, their approval queue. **Creating a post sends it**: it publishes at
+holds their connected accounts and, where they have asked for one, their
+approval queue. **Creating a post sends it**: it publishes at
 the time given, or straight away when none is — there is no second step that
 sends it. A project in copilot mode holds an agent's posts for approval
 instead (`get_project` says which), and the approval route refuses an agent
@@ -17,17 +17,26 @@ A post made directly on the network — typed into X or Instagram itself — is
 outside all three, and cannot be tracked, retried or taken down from here.
 These tools are the route that leaves a record.
 
-## Connection
+## Connection — check this first
 
-**Preferred: the `xpost` MCP server.** If it is connected you have the
-tools below and nothing else is needed. If it is not connected, here is how —
-no key required:
+**Preferred: the `xpost` MCP server.** If you have tools like `get_project`
+and `list_accounts`, it is connected and nothing else is needed.
 
+**If you don't have them, xpost is not connected yet** — even when this skill
+is installed. Installing the xpost plugin brings the connector signed out,
+and nothing prompts the person to sign in, so they usually don't know. Before
+anything else, tell them in one or two sentences that xpost needs connecting
+once and exactly where, from the list below; then carry on when they're back.
+Don't draft the post first, and don't reach for the CLI or raw HTTP instead
+unless they ask — a signed-in connector is what they installed. No key is
+needed anywhere:
+
+- Claude.ai, Claude Desktop or Cowork with the xpost plugin installed: **Customize → Connectors**, find xpost, press **Connect** and sign in. Don't have them add a custom connector too — it would be a second copy.
+- Claude.ai / Claude Desktop without the plugin: Customize → Connectors → Add → custom connector, paste `https://xpost.to/api/mcp`, sign in.
 - Claude Code with the xpost plugin installed: the server is already there, signed out. Tell them to type `/mcp`, pick xpost and choose Authenticate. Don't have them run `claude mcp add` too — it isn't needed.
 - Claude Code without the plugin: `claude mcp add --transport http xpost https://xpost.to/api/mcp`, then `/mcp` → xpost → Authenticate.
 - Cursor / Windsurf / Gemini CLI / VS Code: add `https://xpost.to/api/mcp` as an HTTP MCP server; the client opens the sign-in page.
 - ChatGPT: xpost is in the plugin directory — find it, add it, sign in.
-- Claude.ai / Claude Desktop: Settings → Connectors → Add custom connector, paste `https://xpost.to/api/mcp`, sign in.
 
 **Fallback: the `xpost` CLI** (`npx xpost`, zero install), when there is no
 MCP client — a shell, a script, a headless box. Every command is one route of
@@ -54,7 +63,7 @@ Raw HTTP works too: the public API at `https://xpost.to/api/v1`, spec at
 
 | Do this | Tool |
 |---|---|
-| Learn the project: timezone, approval mode, signature, guardrails, allowance | `get_project` |
+| Learn the project: timezone, approval mode, allowance | `get_project` |
 | See destinations and what each can carry | `list_accounts` |
 | The exact options an account takes (placements, first comment, boards…) | `get_posting_rules` |
 | Attach a file the user gave you (path, URL, or a chat attachment) | `upload_media` — or `create_post` with `files` / `media_pending` |
@@ -67,7 +76,6 @@ Raw HTTP works too: the public API at `https://xpost.to/api/v1`, spec at
 | A destination failed — try it again | `retry_delivery` |
 | Pull a live post down (only when asked) | `take_down_post` |
 | Which accounts need reconnecting | `list_connection_issues` |
-| Test a caption against the rules before writing more | `check_guardrails` |
 | Learn what works | `get_post_metrics`, `get_insights`, `get_top_posts`, `get_best_times` |
 
 ## Workflow
@@ -111,8 +119,7 @@ Raw HTTP works too: the public API at `https://xpost.to/api/v1`, spec at
    approval link; the person sends it from its page. Per-account words and
    options go in `platform_configurations`, keyed by platform:
    `{"x": {"caption": "shorter", "first_comment": "…", "thread": ["…"]}}`,
-   `{"instagram": {"placement": "stories"}}`. Every text field — caption,
-   overrides, first comment, thread — runs through the guardrails.
+   `{"instagram": {"placement": "stories"}}`.
 5. **What the answer means.**
    - `scheduled` — the normal outcome: nothing is holding it. `publishes` is
      when it goes out, on the project's clock, and the **See post preview**
@@ -122,9 +129,9 @@ Raw HTTP works too: the public API at `https://xpost.to/api/v1`, spec at
    - `pending_approval` — this project holds agent posts. It is waiting on a
      person, it has not published, and the call has already landed; the same
      preview link is where they see it.
-   - `ok: false` with `error_code` — a refusal, as data. Guardrail violations
-     name the rule in `violations[].detail`, and the same rules run again on
-     the next attempt, so a caption that meets them is what clears it. A
+   - `ok: false` with `error_code` — a refusal, as data. Any `violations`
+     name the reason in `violations[].detail`, and the same check runs again
+     on the next attempt, so a post that meets it is what clears it. A
      missing plan (`publishing_needs_plan`) or a missing account comes with a
      `message` written for the person.
    - **The first post is free**, before any plan: it goes to every account
@@ -182,8 +189,8 @@ not zero, and stories are not reported on by anyone. `get_insights` for
   them is sent.
 - The time that will happen is `publishes` in the answer, on the project's
   clock — a request's `scheduled_at` is what was asked for, not what came back.
-- A guardrail refusal is about the words; a held post is about a person. One
-  is fixed by rewriting, the other by waiting.
+- A refusal is about the post; a held post is about a person. One is fixed
+  by changing it, the other by waiting.
 - A receipt can be partial — delivered on X, failed on Instagram with its own
   reason — because each destination is independent.
 - X takes one $cashtag per tweet. A second is refused before anything is

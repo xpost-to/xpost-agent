@@ -6,14 +6,14 @@
     "email": "mail@xpost.to",
     "url": "https://xpost.to"
   },
-  "description": "Post to 9 social networks from your assistant. You see every post it makes.",
+  "description": "Post all your social media with your AI agent — 9 networks, from Claude, ChatGPT, Cursor or any MCP client.",
   "plugins": [
     {
       "name": "xpost",
       "displayName": "xpost",
       "source": "./",
-      "description": "Draft, schedule, edit and check delivery of posts on X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest through xpost — with the hosted MCP server (sign in once, no keys) and the skill that teaches the workflow: approval queue, brand guardrails, per-account receipts.",
-      "version": "1.0.2",
+      "description": "Post all your social media with your AI agent: X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest. Bundles the hosted xpost MCP server (sign in once, no keys) and the skill that teaches your assistant to write, schedule, edit and publish posts there.",
+      "version": "1.0.3",
       "category": "productivity",
       "keywords": ["social-media", "scheduling", "x", "twitter", "instagram", "linkedin", "tiktok", "youtube", "threads", "bluesky", "pinterest", "facebook", "mcp"]
     }

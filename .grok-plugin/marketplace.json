@@ -1,6 +1,6 @@
 {
   "name": "xpost-agent",
-  "description": "Post to 9 social networks from Grok Build. You see every post it makes.",
+  "description": "Post all your social media with your AI agent — 9 networks, from Grok Build.",
   "owner": {
     "name": "xpost",
     "email": "mail@xpost.to"
@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "xpost",
-      "description": "Post to X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest through xpost. Every post reaches the person, and approvals are one switch away. Bundles the hosted xpost MCP server and the skill that teaches the workflow.",
+      "description": "Post all your social media with your AI agent: X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Threads, Bluesky and Pinterest. Bundles the hosted xpost MCP server and the skill that teaches the workflow.",
       "category": "productivity",
       "source": { "type": "local", "path": "./" },
       "homepage": "https://xpost.to",
